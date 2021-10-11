@@ -31,7 +31,7 @@ else
     echo ${red} ${pipe} "##UUID already in use##" ${pipe} ${reset}
     #exit 1
 fi
-
+mkdir -p /home/nfsclient/nfs
 echo ${blue} ${pipe} "##Mount NFS repertory##" ${pipe} ${reset}
 #sudo chown nfsclient '/tmp/NFS_configure/conf_test_user.sh'
 
