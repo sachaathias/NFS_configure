@@ -34,7 +34,7 @@ fi
 
 
 echo ${blue} ${pipe} "##Mount NFS repertory##" ${pipe} ${reset}
-su nfsclient
+sudo -i -u nfsclient bash << EOF
 mkdir /home/nfsclient/nfs
 sudo mount -t nfs4 hard,intr 192.170.160.110:/srv/nfs4 /home/nfsclient/nfs
 cmd_status=$?
@@ -82,5 +82,5 @@ else
     echo ${red} ${pipe} "##Read file Fail##" ${pipe} ${reset}
     exit 1
 fi
-
+EOF
 echo ${blue} ${pipe} "##End Configuration##" ${pipe} ${reset}
