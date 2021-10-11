@@ -19,6 +19,8 @@ echo ${blue} ${pipe} "##Create New User##" ${pipe} ${reset}
 uuid_checker=$(getent "passwd" "4242")
 cmd_status=$?
 
+cd ~
+
 if [ $cmd_status -eq 2]
 then
     sudo useradd -m -u 4242 nfsclient
