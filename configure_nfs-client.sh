@@ -29,28 +29,28 @@ then
     echo ${green} ${pipe} "##User has been created##" ${pipe} ${reset}
 else
     echo ${red} ${pipe} "##UUID already in use##" ${pipe} ${reset}
-    exit 1
+    #exit 1
 fi
 
-
 echo ${blue} ${pipe} "##Mount NFS repertory##" ${pipe} ${reset}
-sudo -i -u nfsclient bash << EOF
-mkdir /home/nfsclient/nfs
-sudo mount -t nfs4 hard,intr 192.170.160.110:/srv/nfs4 /home/nfsclient/nfs
+#sudo chown nfsclient '/tmp/NFS_configure/conf_test_user.sh'
+
+sudo mount -t nfs4 -o hard,intr 192.170.160.110:/srv/nfs4 /home/nfsclient/nfs
 cmd_status=$?
 
-if [ cmd_status -eq 0 ]
+if [ $cmd_status -eq 0 ]
 then
     echo ${green} ${pipe} "##NFS Repositiry Mount Succes##" ${pipe} ${reset}
-    echo "192.170.160.110:/srv/nfs4 /home/nfsclient/nfs hard,intr 0 0" >> /etc/fstab
 else
     echo ${red} ${pipe} "##NFS Repository Mount Fail##" ${pipe} ${reset}
     exit 1
 fi
 
 echo ${blue} ${pipe} "##Test Read-Write Access##" ${pipe} ${reset}
+cd '/home/nfsclient/nfs/data'
 
-touch $HOSTNAME
+sudo -u nfsclient whoami
+sudo -u nfsclient touch $HOSTNAME
 write_status=$?
 
 if [ $write_status -eq 0 ]
@@ -58,10 +58,9 @@ then
     echo ${green} ${pipe} "##Write Success##" ${pipe} ${reset}
 else
     echo ${red} ${pipe} "##Write Success##" ${pipe} ${reset}
+fi
 
-
-
-echo "test writting permission" > ./$HOSTANME
+sudo -u nfsclient echo "test writting permission" > "/home/nfsclient/nfs/data/$HOSTNAME"
 write_status=$?
 
 if [ $write_status -eq 0 ]
@@ -72,7 +71,7 @@ else
     exit 1
 fi
 
-cat ./$HOSTANAME
+sudo -u nfsclient cat "/home/nfsclient/nfs/data/$HOSTNAME"
 read_status=$?
 
 if [ $read_status -eq 0 ]
@@ -82,5 +81,6 @@ else
     echo ${red} ${pipe} "##Read file Fail##" ${pipe} ${reset}
     exit 1
 fi
-EOF
+
+sudo echo "192.170.160.110:/srv/nfs4 /home/nfsclient/nfs hard,intr 0 0" >> /etc/fstab
 echo ${blue} ${pipe} "##End Configuration##" ${pipe} ${reset}
