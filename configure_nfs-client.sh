@@ -44,8 +44,8 @@ else
 fi
 
 echo ${blue} ${pipe} "##Test Read-Write Access##" ${pipe} ${reset}
-cd '/srv/nfs4'
-
+cd '/srv/nfs4/data'
+ls
 sudo -u nfsclient whoami
 sudo -u nfsclient touch $HOSTNAME
 write_status=$?
@@ -57,7 +57,7 @@ else
     echo ${red} ${pipe} "##Write Success##" ${pipe} ${reset}
 fi
 
-sudo -u nfsclient echo "test writting permission" > "/srv/nfs4/$HOSTNAME"
+sudo -u nfsclient echo "test writting permission" > "/srv/nfs4/data/$HOSTNAME"
 write_status=$?
 
 if [ $write_status -eq 0 ]
@@ -68,7 +68,7 @@ else
     exit 1
 fi
 
-sudo -u nfsclient cat "/srv/nfs4/$HOSTNAME"
+sudo -u nfsclient cat "/srv/nfs4/data/$HOSTNAME"
 read_status=$?
 
 if [ $read_status -eq 0 ]
