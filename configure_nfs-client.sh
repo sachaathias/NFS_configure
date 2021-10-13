@@ -3,10 +3,7 @@
 reset=$(tput sgr 0)
 green=$(tput setaf 2)
 red=$(tput setaf 1)
-mag=$(tput setaf 5)
 blue=$(tput setaf 6)
-true="${green}[OK]${reset}"
-false="${red}[KO]${reset}"
 
 echo ${blue} ${pipe} "##Start Configuration##" ${pipe} ${reset}
 
@@ -31,11 +28,11 @@ else
     echo ${red} ${pipe} "##UUID already in use##" ${pipe} ${reset}
     #exit 1
 fi
-mkdir -p /home/nfsclient/nfs
+sudo mkdir -p /srv/nfs4
 echo ${blue} ${pipe} "##Mount NFS repertory##" ${pipe} ${reset}
 #sudo chown nfsclient '/tmp/NFS_configure/conf_test_user.sh'
 
-sudo mount -t nfs4 -o hard,intr 192.170.160.110:/srv/nfs4 /home/nfsclient/nfs
+sudo mount -t nfs4 -o hard,intr 192.170.160.110:/srv/nfs4 /srv/nfs4
 cmd_status=$?
 
 if [ $cmd_status -eq 0 ]
@@ -47,7 +44,7 @@ else
 fi
 
 echo ${blue} ${pipe} "##Test Read-Write Access##" ${pipe} ${reset}
-cd '/home/nfsclient/nfs/data'
+cd '/srv/nfs4'
 
 sudo -u nfsclient whoami
 sudo -u nfsclient touch $HOSTNAME
@@ -60,7 +57,7 @@ else
     echo ${red} ${pipe} "##Write Success##" ${pipe} ${reset}
 fi
 
-sudo -u nfsclient echo "test writting permission" > "/home/nfsclient/nfs/data/$HOSTNAME"
+sudo -u nfsclient echo "test writting permission" > "/srv/nfs4/$HOSTNAME"
 write_status=$?
 
 if [ $write_status -eq 0 ]
@@ -71,7 +68,7 @@ else
     exit 1
 fi
 
-sudo -u nfsclient cat "/home/nfsclient/nfs/data/$HOSTNAME"
+sudo -u nfsclient cat "/srv/nfs4/$HOSTNAME"
 read_status=$?
 
 if [ $read_status -eq 0 ]
@@ -82,5 +79,5 @@ else
     exit 1
 fi
 
-sudo echo "192.170.160.110:/srv/nfs4 /home/nfsclient/nfs hard,intr 0 0" >> /etc/fstab
+sudo echo "192.170.160.110:/srv/nfs4 /srv/nfs4 hard,intr 0 0" >> /etc/fstab
 echo ${blue} ${pipe} "##End Configuration##" ${pipe} ${reset}
