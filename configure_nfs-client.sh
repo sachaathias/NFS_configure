@@ -78,6 +78,6 @@ else
     echo ${red} ${pipe} "##Read file Fail##" ${pipe} ${reset}
     exit 1
 fi
-
-sudo echo "192.170.160.110:/srv/nfs4 /srv/nfs4 hard,intr 0 0" >> /etc/fstab
+sudo sh -c "echo '192.170.160.110:/srv/nfs4 /srv/nfs4 hard,intr 0 0' >> /etc/fstab"
+#sudo echo "192.170.160.110:/srv/nfs4 /srv/nfs4 hard,intr 0 0" >> /etc/fstab
 echo ${blue} ${pipe} "##End Configuration##" ${pipe} ${reset}
