@@ -12,7 +12,8 @@ sudo apt-get install portmap nfs-common
 
 
 echo ${blue} ${pipe} "##Create New User##" ${pipe} ${reset}
-
+sudo userdel -r nfsclient
+sudo userdel nfsclient
 uuid_checker=$(getent "passwd" "4242")
 cmd_status=$?
 
