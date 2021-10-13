@@ -57,16 +57,16 @@ else
     echo ${red} ${pipe} "##Write Success##" ${pipe} ${reset}
 fi
 
-sudo -u nfsclient echo "test writting permission" > "/srv/nfs4/data/$HOSTNAME"
-write_status=$?
+#sudo -u nfsclient echo "test writting permission" > "/srv/nfs4/data/$HOSTNAME"
+#write_status=$?
 
-if [ $write_status -eq 0 ]
-then
-    echo ${green} ${pipe} "##Write into file Success##" ${pipe} ${reset}
-else
-    echo ${red} ${pipe} "##Write into file fail##" ${pipe} ${reset}
-    exit 1
-fi
+#if [ $write_status -eq 0 ]
+#then
+    #echo ${green} ${pipe} "##Write into file Success##" ${pipe} ${reset}
+#else
+   # echo ${red} ${pipe} "##Write into file fail##" ${pipe} ${reset}
+   # exit 1
+#fi
 
 sudo -u nfsclient cat "/srv/nfs4/data/$HOSTNAME"
 read_status=$?
